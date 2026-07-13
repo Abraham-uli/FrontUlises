@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material'
+import { Stack, Switch } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { BUs, familia, Orden_Etd_Cur, Revisados_Masivo, Revisados_Unica, tipos_modif } from '../materialReutilizable/RangosReusables'
 import { ContentCopy, Scale } from '@mui/icons-material'
@@ -6,6 +6,8 @@ import '../../Componentes/button.css'
 import ClientesService from '../../service/ClientesService'
 
 function FormatoRevisados() {
+    const [itemsPO, setitemsPO] = useState(false);
+    const [preciosPO, setpreciosPO] = useState(false);
     const [tablavisible, settablavisible] = useState('')
     const [clickcambio,setclickcambio]= useState(true);
     const [clickEA,setclickEA]= useState(true);
@@ -19,7 +21,8 @@ function FormatoRevisados() {
     const [precios, setprecios ] = useState([]);
     const [registro, setregistro] = useState([]);
     const [aditem,setaditem] = useState(false);
-
+    const [datosTpPm, setdatosTpPm] = useState([]);
+    const [titulosColor,settitulosColor] = useState({Precio:false , Cantidad:false , monto:false , solped:false , um:false , descripcion:false , etd:false  })
     useEffect(()=>{
         ClientesService.getproveedoresall().then((response)=>{
             setproveedores(response.data)
@@ -46,21 +49,33 @@ function FormatoRevisados() {
             [e.target.id]: e.target.value
         }))
     };
+    console.log(precios)
     const tipoM = (e)=>{
             if (e.target.value ==="Solped"){
                     setNoSolped(e.target.checked ? false : true)
+                settitulosColor((prev) => ({...prev,
+                solped: e.target.checked   
+            }))
             }  else if (e.target.value === "Adición item / other item"){
                 setaditem(e.target.checked ? true : false)
-            }
+                settitulosColor((prev) => ({...prev,
+            Cantidad: e.target.checked , Precio: e.target.checked , monto: e.target.checked, descripcion: e.target.checked , um: e.target.checked , etd: e.target.checked , solped: e.target.checked   
+            }))
+            }else if (e.target.value === "Precio" || e.target.value === "Cantidad"){ 
+                settitulosColor((prev) => ({...prev,
+            [e.target.value]: e.target.checked 
+            }))
+            }else if (e.target.value === "Adición de línea" ){ 
+                settitulosColor((prev) => ({...prev,
+             etd: e.target.checked    
+            }))            
+            };
     };
-
     const fechahoy = new Date()
     const fechaFormateada = fechahoy.toISOString().split('T')[0];
-
     const cambiofila = (e) =>{
         console.log(e.target.id)
-    }
-        
+    }  
     const añadirfila = (e) =>{
         if (e.target.innerText === "+"){
         setfilasTab(Number(filasTab) + Number(filasinput))
@@ -75,7 +90,6 @@ function FormatoRevisados() {
         setregistro((prev) => ({
             ...prev,
             responsable: res.gerenteBU , unidad_de_negocio : res.unidaddeNegocio 
-            
         }));
     }else{
         if (e.target.id === "cuentadocs" && e.target.value === "si"  ) {
@@ -95,7 +109,29 @@ function FormatoRevisados() {
         }))
     }
 }
-{console.log(registro)}
+const getordenTP = (e)=>{
+    const medida = (e.target.value).length
+        if (medida === 7) {
+              ClientesService.getTpPm(e.target.value).then((response)=>{
+                setdatosTpPm(response.data)
+                setregistro((prev) => ({ ...prev, ...response.data[0] }))
+            }).catch((error)=>{
+                console.log(error)
+              })}
+}
+const solpedfunc = (e) =>{
+            setregistro((prev) => ({
+            ...prev,
+            solpedval: e.target.value
+        }))
+}
+const cambioSwith = (e)=>{
+    if (e.target.id === "itemP"){
+        setitemsPO(itemsPO ? false : true)
+    }else if (e.target.id === "preciosP"){
+        setpreciosPO(preciosPO ? false : true)
+    }
+}
 return (
     <div >
         <Stack direction='row' alignItems='end' spacing={2} sx={{padding:'1%',marginLeft:'70%' }}>
@@ -151,11 +187,18 @@ return (
                 <label for="unica">Única</label>
                 <input style={{marginLeft:'90px', transform: 'scale(1.3)'}}  onClick={(e)=>{tablaC(e)}} type="radio" id="tipotabla" name="tipotabla" value="masivo" />
                 <label for="masivo">Masivo</label>
-                <div  style={{padding:'1%' , marginLeft:'2%' ,display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '3px' ,textAlign:'center' , maxWidth:'70%'  }}>
+                <div  style={{padding:'1%' , marginLeft:'2%' ,display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2px' ,textAlign:'center' , maxWidth:'60%'  }}>
                     {Orden_Etd_Cur.map((item) => (
                     <label key={item} value={item} style={{color:'#4d73da', fontWeight:'bold'}} hidden={tablavisible === 'unica'  ? false : ( item.includes("Moneda") && tablavisible === 'masivo' )  ? false : true } > 
-                    {item}<br></br><input id={item === "etd" ? '' : item.includes("PO") ? 'miInput' : '{item}'} style={{ textAlign:'center' , width:item === "ETD" ? '' : item.includes("PO") ? '120px' : '70px'}} type={item === "ETD" ? 'date' : item.includes("PO") ? 'number' : 'text'}/>
+                    {item}<br></br><input onChange={(e)=>{getordenTP(e)}} readOnly={item.includes("PO PM") ? false : true } 
+                         value={item === "PO TT" ? datosTpPm[0]?.poth : item === "Moneda" ? datosTpPm[0]?.moneda : 
+                            item === "PO PM/TS" ? datosTpPm[0]?.po : item === "ETD" ? datosTpPm[0]?.etd : ''
+                          } 
+                        id={item === "etd" ? '' : item.includes("PO") ? 'miInput' : '{item}'} 
+                        style={{ textAlign:'center' , width:item === "ETD" ? '' : item.includes("PO") ? '120px' : '70px'}} 
+                        type={item === "ETD" ? 'date' : item.includes("PO") ? 'number' : 'text'}/>
                     </label>))}
+                    <label hidden={tablavisible === 'unica'  ? false :true} style={{borderBottom:'solid 1px black', padding:'5%',width:'250%'}}> Proveedor:  {datosTpPm[0]?.proveedor}</label>
                 </div>                
             </section>
             <div hidden={tabla.visible} style={{marginTop:'1%', alignItems:'center' , border:'solid #d1cece 1px ' }}>
@@ -169,7 +212,7 @@ return (
                 </div>
                 <Stack hidden={NoSolped} direction='row' style={{padding:'1%',marginLeft:'-10%',maxWidth:'60%'}}>
                     <span >No. Solped</span>&nbsp;
-                    <input style={{maxHeight:'50%' ,border:'none', borderBottom:'1px solid black'}} type='text' />
+                    <input onChange={(e)=>{solpedfunc(e)}} value={registro.solpedval} style={{maxHeight:'50%' ,border:'none', borderBottom:'1px solid black'}} type='text' />
                 </Stack>
             </Stack>
             </div>
@@ -180,12 +223,26 @@ return (
                 <button style={{marginLeft:'1%'}} onClick={(e)=> añadirfila(e)} className="btn btn-danger btn-sm fw-bold px-2 py-0" >-</button>
                     <input  onChange={(e) => {setfilasinput(e.target.value)}} id='miInput' type='number'  defaultValue={filasinput} style={{fontWeight:'bold'  ,textAlign:'center',fontSize:'12px', marginLeft:'1%',width:'3%'}}/ >
                 <button style={{marginLeft:'1%'}} onClick={(e)=> añadirfila(e)} className="btn btn-success btn-sm fw-bold px-2 py-0" >+</button>
+             
+             <label style={{marginLeft:'5%',fontWeight:itemsPO ? 'bold': ''}}>Items PO</label>
+                <Switch id="itemP" onChange={(e)=>{cambioSwith(e)}} defaultChecked color="warning" />
+             <label style={{fontWeight:itemsPO ? '': 'bold'}}>Items Manual</label>
+            
+             <label style={{marginLeft:'5%', fontWeight:preciosPO ? 'bold': ''}}>Precio Automatico</label>
+                <Switch id="preciosP" onChange={(e)=>{cambioSwith(e)}} defaultChecked color="success" />
+             <label style={{fontWeight:preciosPO ? '': 'bold'}}>Precio Manual</label>
+            
             </div>
             <table className='table'>
                 <thead className='thead-dark' style={{textAlign:'center'}} >
                 <tr>
                     {Revisados_Unica.map((item) => 
-                        <th key={item} id={item} style={{ fontSize:'small'  ,display:item === "UM" && aditem === false ? 'none' :''}} >{item}</th>
+                        <th key={item} id={item} 
+                        style={{ fontSize:'small'  ,display:item === "UM" && aditem === false ? 'none' :'' , 
+                     backgroundColor:((item.includes("PRECIO") && titulosColor.Precio) || (item.includes("CANTIDAD") && titulosColor.Cantidad) ||
+                    (item.includes("MONTO") && titulosColor.monto) || (item.includes("DESCRIPCIÓN") && titulosColor.descripcion) ||
+                    (item.includes("UM") && titulosColor.um) || (item.includes("ETD") && titulosColor.etd || (item.includes("SOLPED") && titulosColor.solped))) ? "#FBE2D5" : ''}}   
+                    >{item}</th>
                     )} 
                 </tr>      
                  </thead>  
@@ -195,7 +252,7 @@ return (
                             {Revisados_Unica.map((item, indexItem) => (
                                 <td key={'u'+ indexItem} id={'u'+ indexItem + " " + indexFila}  
                                 contentEditable='true' style={{border:'dotted black 1px' , borderRadius:'6px', display:item === "UM" && aditem === false ? 'none' :''}}>
-                                {item === "ETD" ? <input type="date" /> : null}
+                                {item === "ETD" ? <input id={'u'+ indexItem + " " + indexFila} type="date" /> : null}
                                 </td>
                             ))}
                             </tr>
@@ -213,15 +270,20 @@ return (
                 <thead className='thead-dark' style={{textAlign:'center'}} >
                 <tr>
                     {Revisados_Masivo.map((item) => 
-                        <th key={item} id={item} style={{display:item === "UM" && aditem === false ? 'none' :''}}>{item}</th>
+                        <th key={item} id={item} style={{display:item === "UM" && aditem === false ? 'none' :'',
+                             backgroundColor:((item.includes("PRECIO") && titulosColor.Precio) || (item.includes("CANTIDAD") && titulosColor.Cantidad) ||
+                    (item.includes("MONTO") && titulosColor.monto) || (item.includes("DESCRIPCIÓN") && titulosColor.descripcion) ||
+                    (item.includes("UM") && titulosColor.um) || (item.includes("ETD") && titulosColor.etd || (item.includes("SOLPED") && titulosColor.solped))) ? "#FBE2D5" : ''}}>{item}</th>
                     )} 
                 </tr>      
                  </thead>  
-                    <tbody >
+                    <tbody onInput={(e)=>{cambiofila(e)}} >
                         {Array.from({ length: filasTab }).map((_, indexFila) => (
                             <tr key={indexFila} style={{ borderBlock: '1px solid #d1cece', backgroundColor: 'gray', }} >
                             {Revisados_Masivo.map((item, indexItem) => (
-                                <td key={'m'+indexItem} id={'u'+ indexItem + " " + indexFila} contentEditable='true' style={{display:item === "UM" && aditem === false ? 'none' :''}}>
+                                <td key={'m'+indexItem} id={'u'+ indexItem + " " + indexFila} 
+                                contentEditable='true' style={{display:item === "UM" && aditem === false ? 'none' :''}}>
+                                {item === "ETD" ? <input id={'u'+ indexItem + " " + indexFila} type="date" /> : null}
                                 </td>
                             ))}
                             </tr>

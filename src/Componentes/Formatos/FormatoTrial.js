@@ -152,7 +152,6 @@ function FormatoTrial() {
     if (buSeleccionada && buSeleccionada !== "") {
       ClientesService.getcontactosall().then((response) => {
         const listaContactos = response.data || [];
-        //console.log(listaContactos)
         const cMap = listaContactos.find(c => {
           const nombreBU = c.unidaddeNegocio || c.unidad_de_negocio || "";
           return String(nombreBU).trim()===buSeleccionada;
@@ -194,7 +193,6 @@ function FormatoTrial() {
         return codigo_sap === numeroSello;
       });
       if (selloEncontrado) {
-        //console.log(selloEncontrado)
       setToastState({show: true,
         titulo: `Sello ${selloEncontrado.codigo_sap}:`,
         comentario: selloEncontrado.texto_sello 
@@ -206,7 +204,6 @@ function FormatoTrial() {
   }
 };
 
- //estado tablas dinamic- inicia con dos filas vacia
   const [tablas, setTablas] = useState([{etd: '', cantFilas:1, c_pag: '', descripcionCondPago: '', filas: [{ ...fila }]}]);
   const agregarTabla = () => {setTablas([...tablas, {etd: '', cantFilas:1,c_pag: '', descripcionCondPago: '',filas: [{ ...fila }] }]);};
   const eliminarTabla = () => { if (tablas.length === 1) return; setTablas(tablas.slice(0, -1)); };
@@ -270,8 +267,6 @@ function FormatoTrial() {
             const codigoFila = String(valor || '').trim();
             return Number(materialt) === Number(codigoFila) && Number(proveedort) === Number(proveedorActual);
           });
-
-          //console.log(precioEncontrado);
 
           if (precioEncontrado) {
             const precioVal = precioEncontrado.precio || precioEncontrado.Precio || 0;
@@ -362,7 +357,6 @@ function FormatoTrial() {
   }
   const datosUnicos=datosTabla();
 
-  //pdf 
   const descargarPDF = () => {
     const elemento = pdf.current;
     const tablaParcel = elemento.querySelector('.tabla-parcel');
@@ -372,7 +366,7 @@ function FormatoTrial() {
       o.style.setProperty('display', 'none', 'important');
     });
     if(oculta && tablaParcel){
-      tablaParcel.style.display="block"; //la tabla parcel se hace visible en el dom para ser capturada en el pdf 
+      tablaParcel.style.display="block";  
     }
     const opciones = {
       margin:       [5, 5, 5, 5], //[superior, izquierdo, inferior, derecho]
@@ -380,10 +374,7 @@ function FormatoTrial() {
       image:        {type: 'jpeg', quality: 0.99 },
       html2canvas:  { scale: 2, useCORS: true, logging: false },
       jsPDF:        { unit: 'mm', format: 'letter', orientation: 'landscape' },
-      //autotable: {theme:'grid'},
-      //salto de pag 
       pagebreak: {mode: ["avoid-all"]} //, before:[".tabla-parcel"]
-      //pagebreak:    { mode: ['css', 'legacy'] }
     };
     html2pdf().set(opciones).from(elemento).save().then(()=>{
       if(oculta && tablaParcel){
@@ -411,10 +402,7 @@ function FormatoTrial() {
       bu: formData.bu,
       fecha: formData.fecha,
       noProvSap: formData.noSap,
-      //nombreProv: formData.nombreProveedor,
       claveProv: formData.claveProveedor,
-      //responsable: formData.responsable,
-      //terminoPago: formData.terminoPago
       fabrica: formData.noFabrica,
       spec: formData.spec,
       razonSocial: formData.razonSocial,
@@ -426,11 +414,9 @@ function FormatoTrial() {
       sellos: JSON.stringify(formData.sellos || {}),
       contenidoTablas: JSON.stringify(tablas) 
     };
-    //console.log("Datos :", datos);
     ClientesService.postRegistroTrial(datos).then((response) => {
       const registroCreado = response.data;
       alert(`Registro guardado \nFolio: ${registroCreado.folio}`);
-      //setFormData(prev => ({ ...prev, id: registroCreado.id, folio: registroCreado.folio }));
       setFormData({
         folio:'',bu: '', responsable: '', fecha: new Date().toLocaleDateString('es-MX'),
         nombreProveedor:'', claveProveedor: '', terminoPago: '', moneda: '',
@@ -466,7 +452,6 @@ function FormatoTrial() {
       if (!folioABuscar.trim()) return;
       ClientesService.getTrialporFolio(folioABuscar).then((response) => {
         if (response.data) {
-          //console.log(response.data)
           const registro = response.data;
           let sellosRecuperados = {};
           if(registro.sellos){
@@ -478,10 +463,7 @@ function FormatoTrial() {
             }
           }
           if(registro.contenidoTablas){
-            /* onst tablaCont= typeof registro.contenidoTablas==='string'? JSON.parse(registro.contenidoTablas): registro.contenidoTablas;
-            setTablas(JSON.parse(registro.contenidoTablas)); */
             setTablas(typeof registro.contenidoTablas === 'string' ? JSON.parse(registro.contenidoTablas) : registro.contenidoTablas);
-            //console.log(registro.contenidoTablas)
           }else{
             setTablas([{etd: '', cantFilas:1, c_pag:'', descripcionCondPago:'', filas: [{ codigo: '', clave: '', cantidad: '', diasInventario: '', precioUnitarioFabrica: '', precioUnitarioMontoTotal: '', montoTotalFabrica:'', montoTotal:''}]}]);
           }
@@ -580,7 +562,6 @@ function FormatoTrial() {
   };
 
   const handleCPagChange = (tablaIndex, cPagSeleccionado) => {
-    //const cPagSeleccionado = e.target.value;
     const descripcionC = descripciones[cPagSeleccionado] || '';
     const nuevasTablas = tablas.map((tabla, tIdx) => {
       if (tIdx !== tablaIndex) return tabla;

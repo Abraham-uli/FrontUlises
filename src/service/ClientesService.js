@@ -185,7 +185,9 @@ new_log(filanueva){
 getFabricasByProveedor(noSap) {
   return axios.get(documentos_AUDIT+"/formatos/fabricas/"+noSap);
 }
-
+getTpPm(PO) {
+  return axios.get(documentos_AUDIT+"/formatos/tppm/"+ PO);
+}
 getNombreFabrica(noSap, sapFabrica) {
   return axios.get(documentos_AUDIT + "/formatos/fabricas/nombre?noSap=" + noSap + "&sapFabrica=" + sapFabrica);
 }

@@ -110,7 +110,6 @@ if(almacenlocalusuario === null){
       <Routes>
             <Route exact path='record/' element={<Inicio/>}></Route>
            <Route  path='importaciones/AdmonDocs' element={<Administrador_documentos/>}></Route>   
-           <Route  path='importaciones/AdmonDocs' element={<Administrador_documentos/>}></Route>   
            <Route  path='importaciones/Sesiones' element={<Sesiones/>}></Route>   
            <Route  path='importaciones/inscritos' element={<Inscritos/>}></Route>   
       </Routes>
