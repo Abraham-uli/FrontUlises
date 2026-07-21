@@ -50,7 +50,7 @@ if(localStorage.getItem('perfil') === 'ControlDocumental' ){
         <header >
             <nav  style={{border: "1px solid black"}}  className='navbar navbar-expand-mb navbar-light- bg-light'>
                <div >
-      <label  style={{fontSize:'20px',color:"#f07027ff" , marginLeft:"10%"}} >
+      <label  style={{fontSize:'20px',color:"#f07027ff" , marginLeft:"-10%"}} >
         <b>Onboarding</b>
       </label>
       {/* <ul className="dropdown-menu">

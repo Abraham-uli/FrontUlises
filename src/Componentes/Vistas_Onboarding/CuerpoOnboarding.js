@@ -10,15 +10,20 @@ import familytree from './family-tree.png';
 import deadline from './deadline.png';
 import procedure from './procedure.png';
 import { FormatColorText } from '@mui/icons-material';
+import "./Cuerpoonboarding.css"
 
-function OnboardingCard({title,text,image,imageTitle, fontsize = '30px' ,width = "30rem",bgColor = "#ffffff",textColor = "#2E4D5B",href = "#"}) {
+function OnboardingCard({title,text,image,imageTitle, fontsize = '30px' ,width = "31rem",bgColor = "#ffffff",textColor = "#2E4D5B",href = "#"}) {
+    
     return (
-        <a href={href} style={{ textDecoration: "none" }}>
-            <Card style={{borderRadius: "0px",marginLeft: "-35%", width, height: "350px", textAlign: "center", color: textColor, backgroundColor: bgColor}}>
+        
+<div className="card-animation-layer">
+    <Link to={href}style={{textDecoration: "none"}}>
+            <Card classname="tarjeta-onboarding tarjeta-principal"
+            style={{marginLeft: "-32%", width: width,height: "350px",textAlign: "center",color: textColor,backgroundColor: bgColor}}>
                 <Card.Body
                     style={{display: "flex",flexDirection: "column", height: "100%"}}>
                     <Card.Title>
-                        <span style={{ fontSize: fontsize }}>
+                        <span style={{ fontSize: "25px" }}>
                             {title}
                         </span>
                     </Card.Title>
@@ -33,31 +38,42 @@ function OnboardingCard({title,text,image,imageTitle, fontsize = '30px' ,width =
                     </div>
                 </Card.Body>
             </Card>
-        </a>
-    );
+        </Link>
+    </div>
+  );
 }
-function OnboardingCard2({
-    title, text, image, imageTitle, width = "18rem", bgColor = "#ffffff", textColor = "#2E4D5B", href = "#"}) {
-    return (
-      <a href={href} style={{ textDecoration: "none" }}>
-        <Card
+
+
+function OnboardingCard2({title, text = "", image, imageTitle, width = "14rem", bgColor = "#ffffff", textColor = "#2E4D5B",href = "#"}) {
+
+return (
+    <div className="card-animation-layer"> 
+    <Link to={href}style={{textDecoration: "none"}}>
+        <Card className="tarjeta-onboarding tarjeta-secundaria"
             style={{borderRadius: "22px", width, textAlign: "center", color: textColor, backgroundColor: bgColor}}>
-            <Card.Body>
-                <Card.Title>{title}</Card.Title>
+            <Card.Body
+                style={{display: "flex",flexDirection: "column", height: "100%"}}>
+                <Card.Title>
+                        <span style={{ fontSize: "25px" }}>
+                            {title}
+                            </span>
+                            </Card.Title>
                 <Card.Text>
                     {text}
                 </Card.Text>
                 <div
                         style={{justifyContent: "center", alignItems: "flex-end", height: "180px",margin:"70px auto 0 auto"}}>
                         {image && (
-                            <img src={image} alt={imageTitle} title={imageTitle} style={{width: "45%", maxHeight: "300px", objectFit: "contain"}}/>
+                            <img src={image} alt={imageTitle} title={imageTitle} style={{width: "45%", maxHeight: "350px", objectFit: "contain"}}/>
                         )}
                     </div>
             </Card.Body>
         </Card>
-      </a>
-    );
+      </Link>
+    </div>
+  );
 }
+
 function CuerpoOnboarding() {
     return (
         <div>
@@ -71,7 +87,7 @@ function CuerpoOnboarding() {
             </div>
 
             {/* Segunda sección */}
-            <section style={{ padding: "2%", display: "grid", gridTemplateColumns: "repeat(3, 3fr)", gap: "40px"}}>
+            <section style={{ padding: "2%", display: "grid", gridTemplateColumns: "repeat(3, 3fr)", gap: "280px"}}>
                 <OnboardingCard2 title="Organigrama" image={familytree} imageTitle="Organigrama" bgColor="#2E4D5B" textColor="#fff"/>
 
                 <OnboardingCard2 title="Exámenes Pendientes" image={deadline} imageTitle="Exámenes Pendientes"/>
