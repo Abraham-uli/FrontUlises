@@ -50,8 +50,8 @@ if(localStorage.getItem('perfil') === 'ControlDocumental' ){
         <header >
             <nav  style={{border: "1px solid black"}}  className='navbar navbar-expand-mb navbar-light- bg-light'>
                <div >
-      <label  style={{fontSize:'20px',color:"#f07027ff" , marginLeft:"-10%"}} >
-        <b>Onboarding</b>
+      <label  style={{fontSize:'20px',color:"#f07027ff" , marginLeft:"10%"}} >
+        <b>Inicio</b>
       </label>
       {/* <ul className="dropdown-menu">
         <li><a className="dropdown-item" href="#"><Link  to="importaciones/AdmonDocs" style={{color:'#FF6400'}} className='navbar-brand'> <strong>Documentos</strong> </Link>    </a></li>

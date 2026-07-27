@@ -5,6 +5,7 @@ import {DataGrid } from "@mui/x-data-grid";
 import Menu_onboarding from './Vistas_Onboarding/Menu_onboarding';
 import { Stack } from '@mui/material';
 import CuerpoOnboarding from './Vistas_Onboarding/CuerpoOnboarding';
+import FooterComponent from './FooterComponent';
 
 
 export const Inicio = () => {
@@ -123,6 +124,8 @@ return (
       <Menu_onboarding /> 
       <br></br>
       <CuerpoOnboarding />
+      <br></br>
+      <FooterComponent />
       <br></br>
   </div>
   )

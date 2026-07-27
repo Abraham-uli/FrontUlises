@@ -8,7 +8,7 @@ import { Box } from '@mui/joy';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import './button.css' 
-
+import PruebaUlises from './Pruebaulises';
 function LoginForm({Login, error}) {
   const navigate = useNavigate();
     const [details, setDetails] = useState({username:"",password:""});
@@ -49,6 +49,7 @@ function LoginForm({Login, error}) {
 <Stack style={{marginTop:"1%"}}>
  <Stack  style={myStyle}>
 <br></br>
+          <PruebaUlises />
 <br></br>
     <Box style={{ opacity:0.8 , marginLeft:"32%",height:235,width:350,backgroundColor:'white'}} sx={{ borderRadius: '16px' }}>
         <div className='form-inner'>

@@ -3,66 +3,74 @@
 
 /* ANIMACIÓN FreeFrontend */
 
-@keyframes entrada-tarjeta {
+/* izquierda */
+@keyframes entrada-izquierda {
   from {
     opacity: 0;
-    transform: scale(0.85) rotate(
-      calc(var(--lado, 1) * 5deg * var(--amplitud, 1))
-    );
+    transform: translateX(-120px) scale(0.85) rotate(-5deg);
   }
 
   to {
     opacity: 1;
-    transform: scale(1) rotate(0deg);
+    transform: translateX(0) scale(1) rotate(0deg);
   }
 }
 
+/* centro */
+@keyframes entrada-abajo {
+  from {
+    opacity: 0;
+    transform: translateY(120px) scale(0.85);
+  }
 
-.contenedor-onboarding {
-  width: 100%;
-  min-height: 100vh;
-  padding: 6%;
-  box-sizing: border-box;
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-.seccion-principal {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(250px, 31rem));
-  justify-content: center;
-  gap: 0;
+/* derecha */
+@keyframes entrada-derecha {
+  from {
+    opacity: 0;
+    transform: translateX(120px) scale(0.85) rotate(5deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotate(0deg);
+  }
 }
 
-
-.seccion-secundaria {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(220px, 14rem));
-  justify-content: space-between;
-  gap: 40px;
-  margin-top: 60px;
-  padding: 2%;
-}
-
+/* general */
 .card-animation-layer {
-  animation: entrada-tarjeta 700ms ease-out both;
+  animation-duration: 700ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
 }
 
-
-.card-animation-layer:nth-child(odd) {
-  --lado: -1;
-  transform-origin: 25vw 100%;
+/* 1 de 3 */
+.card-animation-layer:nth-child(3n + 1) {
+  animation-name: entrada-izquierda;
+  transform-origin: left bottom;
 }
 
+/* 2 de 3 */
+.card-animation-layer:nth-child(3n + 2) {
+  animation-name: entrada-abajo;
+  transform-origin: center bottom;
+}
 
-.card-animation-layer:nth-child(even) {
-  --lado: 1;
-  transform-origin: -25vw 100%;
+/* 3 de 3 */
+.card-animation-layer:nth-child(3n) {
+  animation-name: entrada-derecha;
+  transform-origin: right bottom;
 }
 
 
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .card-animation-layer {
-      animation-name: entrada-tarjeta;
       animation-duration: 1ms;
       animation-timing-function: linear;
       animation-fill-mode: both;
