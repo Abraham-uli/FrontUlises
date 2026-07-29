@@ -19,6 +19,7 @@ import { ContactsOutlined } from '@mui/icons-material';
 import FormatoTrial from './Componentes/Formatos/FormatoTrial';
 import MenuFormatos from './Componentes/Formatos/MenuFormatos';
 import FormatoRevisados from './Componentes/Formatos/FormatoRevisados';
+import FormatoAutorizacionSAP from './Componentes/Formatos/FormatoAutorizaciónSAP';
 
 function App() {
   
@@ -143,6 +144,7 @@ if(almacenlocalusuario === null){
           <Route  path='record/' element={<MenuFormatos/>}></Route>
           <Route  path='record/formatotrial' element={<FormatoTrial/>}></Route>
           <Route  path='record/formatorevisados' element={<FormatoRevisados/>}></Route>
+          <Route  path='record/AutorizacionSAP' element={<FormatoAutorizacionSAP/>}></Route>
         </Routes>
       </div>
       </BrowserRouter>

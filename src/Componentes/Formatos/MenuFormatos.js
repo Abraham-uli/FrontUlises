@@ -48,6 +48,15 @@ if (loading) {
 
 return (
     <div style={{padding:'2%'}}className="d-flex justify-content-start" >
+      <Card style={{borderRadius:'22px', width: '15rem', marginRight: '1%'}}>
+        <Card.Body>
+          <Card.Title>Formato Autorización SAP</Card.Title>
+          <Card.Text>
+                Autorizaciones
+          </Card.Text>
+        <Link  to="/record/AutorizacionSAP" className='btn btn-success'  style={{ backgroundColor:'#FF6620', marginLeft: '1%', display: 'inline-block',lineHeight: '2'}}> Ir...</Link>
+        </Card.Body>
+      </Card>
       <Card style={{borderRadius:'22px', width: '15rem' }}>
         <Card.Body>
           <Card.Title>Formato TRIAL</Card.Title>

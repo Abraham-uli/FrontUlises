@@ -114,3 +114,43 @@ export const Revisados_Masivo = [
 "DESCRIPCIÓN (other item)",
 "UM"
 ]
+export const tipoproveedor=[
+  "Nacional",
+  "Importado"
+]
+
+export const motivosAltaProveedor=[
+  "Nuevo proveedor",
+   "Cambio RS",
+   "Cambio Tax Id",
+   "Seleccionar..."
+]
+
+export const paisesOrigen=[
+  "México",
+   "Seleccionar..."
+]
+export const documentosProveedor=[
+  "México",
+   "Seleccionar..."
+]
+export const tiposRelacionProveedor=[
+  "México",
+   "Seleccionar..."
+]
+export const terminosPago=[
+  "México",
+   "Seleccionar..."
+]
+export const camposProductoActualizables=[
+  "México",
+   "Seleccionar..."
+]
+export const datosProveedorActualizables=[
+  "México",
+   "Seleccionar..."
+]
+export const SiNo=[
+  "Sí",
+   "No"
+]
